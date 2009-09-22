@@ -6,8 +6,14 @@ import org.junit.Test;
 
 public class QuoterTest {
 	@Test
-	public void should() throws Exception {
+	public void shouldReturnEmptyStringWhenGivenEmptyString() throws Exception {
 		Quoter quoter = new Quoter("");
 		assertEquals("", quoter.quoted());
+	}
+
+	@Test
+	public void shouldReturnNullWhenGivenNull() throws Exception {
+		Quoter quoter = new Quoter(null);
+		assertNull(quoter.quoted());
 	}
 }
