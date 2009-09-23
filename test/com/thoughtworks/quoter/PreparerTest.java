@@ -18,6 +18,13 @@ public class PreparerTest {
 	}
 
 	@Test
+	public void shouldReplaceTwoTokensWithStrings() throws Exception {
+		String expected = "Howdy \"partner\", it's \"cold\" here!";
+		String template = "Howdy ?, it's ? here!";
+		assertEquals(expected, new Preparer(template, "partner", "cold").prepared());
+	}
+
+	@Test
 	public void shouldNotReplaceEscapedTokenWithString() throws Exception {
 		String expected = "Hello \\?!";
 		String template = "Hello \\?!";

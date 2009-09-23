@@ -12,7 +12,7 @@ public class Preparer {
 		for (String arg : arguments) {
 			Quoter quoter = new Quoter(arg);
 			String replace = quoter.quoted();
-			result = result.replaceAll("(?<!\\\\)\\?", replace); // replace ? but not \?
+			result = result.replaceFirst("(?<!\\\\)\\?", replace); // replace ? but not \?
 		}
 		return result;
 	}
