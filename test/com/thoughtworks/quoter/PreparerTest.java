@@ -30,4 +30,11 @@ public class PreparerTest {
 		String template = "Hello \\?!";
 		assertEquals(expected, new Preparer(template, "stranger").prepared());
 	}
+
+	@Test
+	public void shouldNotReplaceEscapedTokenButReplaceTokenWithString() throws Exception {
+		String expected = "Hello \\? \"stranger\"!";
+		String template = "Hello \\? ?!";
+		assertEquals(expected, new Preparer(template, "stranger").prepared());
+	}
 }
