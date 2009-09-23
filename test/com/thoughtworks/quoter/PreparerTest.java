@@ -21,6 +21,18 @@ public class PreparerTest {
 	}
 
 	@Test
+	public void shouldReturnTemplateWhenTokensButNullArg() throws Exception {
+		String template = "Hello ?";
+		assertEquals(template, new Preparer(template, (Object) null).prepared());
+	}
+
+	@Test
+	public void shouldReturnTemplateWhenTokensButEmptyArgs() throws Exception {
+		String template = "Hello ?";
+		assertEquals(template, new Preparer(template, new Object[] {}).prepared());
+	}
+
+	@Test
 	public void shouldReturnTemplateWhenNoTokens() throws Exception {
 		String template = "Hello";
 		assertEquals(template, new Preparer(template, (Object) null).prepared());
@@ -31,6 +43,13 @@ public class PreparerTest {
 		String expected = "Hello \"stranger\"!";
 		String template = "Hello ?!";
 		assertEquals(expected, new Preparer(template, "stranger").prepared());
+	}
+
+	@Test
+	public void shouldReplaceFirstTokenWithIntegerAndLeaveSecondTokenWithNullArg() throws Exception {
+		String expected = "1 ?";
+		String template = "? ?";
+		assertEquals(expected, new Preparer(template, 1, null).prepared());
 	}
 
 	@Test
