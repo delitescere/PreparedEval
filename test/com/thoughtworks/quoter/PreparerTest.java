@@ -6,6 +6,19 @@ import org.junit.Test;
 
 public class PreparerTest {
 	@Test
+	public void shouldEncodeEscapedInnerQuoteForEval() throws Exception {
+		final Preparer preparer = new Preparer("Hello ?", "wo\"rld"); // very close to what you end up with
+		final String expected = "Hello \\\"wo\\\\\\\"rld\\\""; // the horror you would have to deal with!
+		assertEquals(expected, preparer.preparedForEval());
+	}
+
+	@Test
+	public void shouldEscapeForEval() throws Exception {
+		final Preparer preparer = new Preparer("Hello ?", "world");
+		assertEquals("Hello \\\"world\\\"", preparer.preparedForEval());
+	}
+
+	@Test
 	public void shouldNotQuoteString() throws Exception {
 		assertEquals("Hello world", Preparer.unquoted("Hello ?", "world"));
 	}
