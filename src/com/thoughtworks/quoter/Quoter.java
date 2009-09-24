@@ -52,4 +52,9 @@ public class Quoter {
 	public String quoted() {
 		return "\"" + processed + "\"";
 	}
+
+	@Override
+	public String toString() {
+		return quoted();
+	}
 }

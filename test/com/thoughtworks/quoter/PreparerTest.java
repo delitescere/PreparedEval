@@ -65,10 +65,27 @@ public class PreparerTest {
 	}
 
 	@Test
+	public void shouldNotQuoteString() throws Exception {
+		assertEquals("Hello world", Preparer.unquoted("Hello ?", "world").prepared());
+	}
+
+	@Test
 	public void shouldNotReplaceEscapedToken() throws Exception {
 		String expected = "Hello \\?!";
 		String template = "Hello \\?!";
 		assertEquals(expected, new Preparer(template, "stranger").prepared());
+	}
+
+	@Test
+	public void testToStringReturnsSameAsPrepared() throws Exception {
+		Preparer preparer = new Preparer("Hello ?", "world");
+		assertEquals(preparer.prepared(), preparer.toString());
+	}
+
+	@Test
+	public void testToString() throws Exception {
+		Preparer preparer = new Preparer("Hello ?", "world");
+		assertEquals("Hello \"world\"", "" + preparer);
 	}
 
 	@Test
