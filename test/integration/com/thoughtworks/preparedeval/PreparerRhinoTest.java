@@ -1,4 +1,4 @@
-package com.thoughtworks.quoter;
+package com.thoughtworks.preparedeval;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

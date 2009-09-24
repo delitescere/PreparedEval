@@ -1,4 +1,4 @@
-package com.thoughtworks.quoter;
+package com.thoughtworks.preparedeval;
 
 import static org.junit.Assert.*;
 import java.math.BigDecimal;

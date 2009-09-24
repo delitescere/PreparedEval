@@ -1,4 +1,4 @@
-package com.thoughtworks.quoter;
+package com.thoughtworks.preparedeval;
 
 public class Quoter {
 	/**
