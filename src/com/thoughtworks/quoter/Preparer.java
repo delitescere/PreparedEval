@@ -12,6 +12,7 @@ public class Preparer {
 	public static String prepared(final String template, final Object... arguments) {
 		return new Preparer(template, arguments).prepared();
 	}
+
 	public static Preparer unquoted(final String template, final Object... arguments) {
 		return new Preparer(true, template, arguments);
 	}
@@ -30,8 +31,7 @@ public class Preparer {
 	}
 
 	private String prepare(final String template, final Object... arguments) {
-		if (template == null) return template;
-		if (arguments == null) return template;
+		if (template == null || arguments == null) return template;
 
 		String result = template;
 		for (Object arg : arguments) {
