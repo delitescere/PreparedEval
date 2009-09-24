@@ -47,10 +47,22 @@ public class PreparerTest {
 	}
 
 	@Test
+	public void shouldReplaceTokenWithQuotedAndEscapedString() throws Exception {
+		final String prepared = Preparer.prepared("Hello ?", "wo\"rld");
+		final String expected = "Hello \"wo\\\"rld\"";
+		assertEquals(expected, prepared);
+	}
+
+	@Test
 	public void shouldReplaceTokenWithQuotedString() throws Exception {
 		final String expected = "Hello \"stranger\"!";
 		final String template = "Hello ?!";
 		assertEquals(expected, new Preparer(template, "stranger").prepared());
+	}
+
+	@Test
+	public void shouldReplaceTokenWithUnquotedButEscapedString() throws Exception {
+		assertEquals("Hello wo\\\"rld", Preparer.unquoted("Hello ?", "wo\"rld"));
 	}
 
 	@Test

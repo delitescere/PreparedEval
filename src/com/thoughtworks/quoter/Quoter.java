@@ -5,8 +5,7 @@ public class Quoter {
 	 * Static convenience method. Identical to: <br/>
 	 * <code>new Quoter(string).escaped();</code>
 	 * 
-	 * @param string
-	 *          the string to escape
+	 * @param string the string to escape
 	 * @return the string with double-quotes and backslashes escaped
 	 */
 	public static String escaped(final String string) {
@@ -17,8 +16,7 @@ public class Quoter {
 	 * Static convenience method. Identical to: <br/>
 	 * <code>new Quoter(string).quoted();</code>
 	 * 
-	 * @param string
-	 *          the string to quote
+	 * @param string the string to quote
 	 * @return the escaped string surrounded with double-quotes
 	 * @see escaped()
 	 */
@@ -29,14 +27,10 @@ public class Quoter {
 	private final String processed;
 
 	public Quoter(final String string) {
-		processed = quote(string);
+		processed = escape(string);
 	}
 
-	public String escaped() {
-		return processed;
-	}
-
-	private String quote(final String string) {
+	private String escape(final String string) {
 		if (string == null) return string;
 
 		final StringBuffer buffer = new StringBuffer(string.length() + 16);
@@ -49,12 +43,16 @@ public class Quoter {
 		return buffer.toString();
 	}
 
+	public String escaped() {
+		return processed;
+	}
+
 	public String quoted() {
 		return "\"" + processed + "\"";
 	}
 
 	@Override
 	public String toString() {
-		return quoted();
+		return escaped();
 	}
 }

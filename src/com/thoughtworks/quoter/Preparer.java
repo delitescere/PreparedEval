@@ -9,7 +9,8 @@ public class Preparer {
 	 * @return the string with double-quotes and backslashes escaped
 	 */
 	public static String prepared(final String template, final Object... arguments) {
-		return new Preparer(template, arguments).prepared();
+		final Preparer preparer = new Preparer(template, arguments);
+		return preparer.prepared();
 	}
 
 	/**
@@ -44,8 +45,11 @@ public class Preparer {
 			if (arg == null) continue;
 
 			String replace;
-			if (!unquotedStrings && arg instanceof String) replace = Quoter.quoted((String) arg); // only surround strings with double-quotes
-			else replace = arg.toString();
+			if (arg instanceof String) {
+				if (!unquotedStrings) replace = Quoter.quoted((String) arg); // only surround strings with double-quotes
+				else replace = Quoter.escaped((String) arg);
+				replace = Quoter.escaped(replace); // escape again because replaceFirst (below) is useless with backslashes
+			} else replace = arg.toString();
 
 			result = result.replaceFirst("(?<!\\\\)\\?", replace); // replace ? but not \?
 		}
