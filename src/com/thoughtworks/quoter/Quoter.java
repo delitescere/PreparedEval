@@ -22,7 +22,7 @@ public class Quoter {
 	 * @return the escaped string surrounded with double-quotes
 	 * @see escaped()
 	 */
-	public static String quoted(String string) {
+	public static String quoted(final String string) {
 		return new Quoter(string).quoted();
 	}
 
@@ -39,9 +39,9 @@ public class Quoter {
 	private String quote(final String string) {
 		if (string == null) return string;
 
-		StringBuffer buffer = new StringBuffer(string.length() + 16);
+		final StringBuffer buffer = new StringBuffer(string.length() + 16);
 		for (int i = 0; i < string.length(); i++) {
-			char ch = string.charAt(i);
+			final char ch = string.charAt(i);
 			if (ch == '"' || ch == '\\') buffer.append('\\');
 			buffer.append(ch);
 		}

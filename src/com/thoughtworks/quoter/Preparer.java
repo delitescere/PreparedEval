@@ -5,25 +5,31 @@ public class Preparer {
 	 * Static convenience method. Identical to: <br/>
 	 * <code>new Preparer(template, arguments).prepared();</code>
 	 * 
-	 * @param string
-	 *          the string to
+	 * @param string the string to prepare by substituting question-marks with arguments, and string arguments quoted
 	 * @return the string with double-quotes and backslashes escaped
 	 */
 	public static String prepared(final String template, final Object... arguments) {
 		return new Preparer(template, arguments).prepared();
 	}
 
-	public static Preparer unquoted(final String template, final Object... arguments) {
-		return new Preparer(true, template, arguments);
+	/**
+	 * Static convenience method. Identical to: <br/>
+	 * <code>new Preparer(true, template, arguments).prepared();</code>
+	 * 
+	 * @param string the string to prepare by substituting question-marks with arguments, and string arguments not quoted
+	 * @return the string with double-quotes and backslashes escaped
+	 */
+	public static String unquoted(final String template, final Object... arguments) {
+		return new Preparer(true, template, arguments).prepared();
 	}
 
 	private final String prepared;
 
 	private boolean unquotedStrings = false;
 
-	private Preparer(boolean unquotedStrings, String template, Object... arguments) {
+	public Preparer(final boolean unquotedStrings, final String template, final Object... arguments) {
 		this.unquotedStrings = unquotedStrings;
-		this.prepared = prepare(template, arguments);
+		prepared = prepare(template, arguments);
 	}
 
 	public Preparer(final String template, final Object... arguments) {
@@ -34,7 +40,7 @@ public class Preparer {
 		if (template == null || arguments == null) return template;
 
 		String result = template;
-		for (Object arg : arguments) {
+		for (final Object arg : arguments) {
 			if (arg == null) continue;
 
 			String replace;
