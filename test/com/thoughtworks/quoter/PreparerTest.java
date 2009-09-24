@@ -1,6 +1,7 @@
 package com.thoughtworks.quoter;
 
 import static org.junit.Assert.*;
+import java.math.BigDecimal;
 import org.junit.Test;
 
 public class PreparerTest {
@@ -28,6 +29,21 @@ public class PreparerTest {
 		final String expected = "1 ?";
 		final String template = "? ?";
 		assertEquals(expected, new Preparer(template, 1, null).prepared());
+	}
+
+	@Test
+	public void shouldReplaceTokenWithBigDecimal() throws Exception {
+		assertEquals("pi is 3.14159", new Preparer("pi is ?", new BigDecimal("2.14159").add(BigDecimal.ONE)).prepared());
+	}
+
+	@Test
+	public void shouldReplaceTokenWithFloat() throws Exception {
+		assertEquals("9.8 m/s/s", new Preparer("? m/s/s", 9.8).prepared());
+	}
+
+	@Test
+	public void shouldReplaceTokenWithLong() throws Exception {
+		assertEquals("\"Take\" 5", new Preparer("? ?", "Take", 5L).prepared());
 	}
 
 	@Test
