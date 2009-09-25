@@ -1,12 +1,12 @@
 package com.thoughtworks.preparedeval;
 
+import static org.junit.Assert.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.Undefined;
 
 public class PreparerRhinoTest {
 	private static Context ctx;
@@ -14,7 +14,7 @@ public class PreparerRhinoTest {
 
 	private static Object eval(final String script) {
 		final Object result = ctx.evaluateString(scope, script, "<eval>", 1, null);
-		if (!(result instanceof Undefined)) System.out.println(result.toString());
+		// if (!(result instanceof Undefined)) System.out.println(result.toString());
 		return result;
 	}
 
@@ -30,29 +30,29 @@ public class PreparerRhinoTest {
 		Context.exit();
 	}
 
-	@Test
-	public void should() throws Exception {
-		final String script = Preparer.prepared("substring(?, ?)", "Orange", "ran");
-		System.out.println(script);
-		final Object result = eval(script);
-		// System.out.println(result);
-	}
+	// @Test
+	// public void should() throws Exception {
+	// final String script = Preparer.prepared("substring(?, ?)", "Orange", "ran");
+	// System.out.println(script);
+	// final Object result = eval(script);
+	// }
 
 	@Test
-	public void shouldShowAlert() throws Exception {
-		final String message = Preparer.prepared("Hello ?, how are you?", "stranger");
-		System.out.println(message);
+	public void shouldShowAlertSimpleQuoted() throws Exception {
+		final String message = Preparer.prepared("Hello ?!", "stranger");
+		// System.out.println(message);
 		final String script = Preparer.prepared("alert(?)", message);
-		System.out.println(script);
+		// System.out.println(script);
 		final Object result = eval(script);
-		// System.out.println(result);
+		assertEquals("Hello \"stranger\"!", result);
 	}
 
 	@Test
-	public void shouldShowAlert2() throws Exception {
+	public void shouldShowAlertUnquoted() throws Exception {
 		final String script = Preparer.prepared("alert(?)", "Hello world");
-		System.out.println(script);
+		// System.out.println(script);
 		final Object result = eval(script);
 		// System.out.println(result);
+		assertEquals("Hello world", result);
 	}
 }

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="PreparedEval">
+  <property name="debuglevel" value="source,lines,vars"/>
+	<property name="compile.version.target" value="1.5"/>
+  <property name="compile.version.source" value="1.5"/>
+
+	
+	<property name="junit.output.dir" value="junit"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="bin.dir" value="bin"/>
+
+	<!-- TODO: point to your own JUnit4 installation -->
+	<property name="ECLIPSE_HOME" value="../../Applications/eclipse"/>
+	<path id="junit.classpath">
+		<pathelement location="${ECLIPSE_HOME}/plugins/org.junit4_4.5.0.v20090423/junit.jar"/>
+		<pathelement location="${ECLIPSE_HOME}/plugins/org.hamcrest.core_1.1.0.v20090501071000.jar"/>
+	</path>
+
+	<path id="project.classpath">
+		<pathelement location="${bin.dir}"/>
+		<path refid="junit.classpath"/>
+		<pathelement location="${lib.dir}/rhino/js.jar"/>
+	</path>
+	<fileset id="test.unit.files" dir="test/unit" includes="**/*Test*.java"/>
+	<fileset id="test.integration.files" dir="test/integration" includes="**/*Test*.java"/>
+
+  <target name="clean" description="Clean output directory">
+    <delete dir="${bin.dir}"/>
+  </target>
+
+	<target name="init">
+		<mkdir dir="${bin.dir}"/>
+		<copy includeemptydirs="false" todir="${bin.dir}">
+			<fileset dir="src">
+				<exclude name="**/*.launch"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+		<copy includeemptydirs="false" todir="${bin.dir}">
+			<fileset dir="test/unit">
+				<exclude name="**/*.launch"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+		<copy includeemptydirs="false" todir="${bin.dir}">
+			<fileset dir="test/integration">
+				<exclude name="**/*.launch"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="build" depends="compile" />
+
+	<target name="compile" depends="init">
+		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.dir}" source="${compile.version.source}" target="${compile.version.target}">
+			<src path="src"/>
+			<classpath refid="project.classpath"/>
+		</javac>
+		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.dir}" source="${compile.version.source}" target="${compile.version.target}">
+			<src path="test/unit"/>
+			<classpath refid="project.classpath"/>
+		</javac>
+		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.dir}" source="${compile.version.source}" target="${compile.version.target}">
+			<src path="test/integration"/>
+			<classpath refid="project.classpath"/>
+		</javac>
+	</target>
+
+	<target name="integration-tests" depends="build" description="Run integration tests">
+		<mkdir dir="${junit.output.dir}"/>
+		<junit fork="yes" printsummary="withOutAndErr">
+			<formatter type="xml"/>
+      <batchtest>
+        <fileset refid="test.integration.files"/>
+      </batchtest>
+			<jvmarg line="-ea"/>
+			<classpath refid="project.classpath"/>
+		</junit>
+	</target>
+
+	<target name="unit-tests" depends="build" description="Run unit tests">
+		<mkdir dir="${junit.output.dir}" />
+		<junit fork="yes" printsummary="withOutAndErr">
+			<formatter type="xml"/>
+			<batchtest>
+				<fileset refid="test.unit.files"/>
+			</batchtest>
+      <jvmarg line="-ea"/>
+			<classpath refid="project.classpath"/>
+		</junit>
+	</target>
+
+	<target name="junitreport">
+		<junitreport todir="${junit.output.dir}">
+			<fileset dir="${junit.output.dir}">
+				<include name="TEST-*.xml"/>
+			</fileset>
+			<report format="frames" todir="${junit.output.dir}"/>
+		</junitreport>
+	</target>
+</project>
