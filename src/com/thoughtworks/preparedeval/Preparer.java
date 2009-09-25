@@ -10,8 +10,19 @@ public class Preparer {
 	 * @return the prepared string
 	 */
 	public static String prepared(final String template, final Object... arguments) {
-		final Preparer preparer = new Preparer(template, arguments);
-		return preparer.prepared();
+		return new Preparer(template, arguments).prepared();
+	}
+
+	/**
+	 * Static convenience method. Identical to: <br/>
+	 * <code>new Preparer(template, arguments).preparedForEval();</code>
+	 * 
+	 * @param template the string to prepare by substituting question-marks with arguments
+	 * @param arguments any string arguments are escaped and quoted
+	 * @return the prepared string with all double-quotes and all backslashes escaped with backslashes
+	 */
+	public static String preparedForEval(final String template, final Object... arguments) {
+		return new Preparer(template, arguments).preparedForEval();
 	}
 
 	/**
