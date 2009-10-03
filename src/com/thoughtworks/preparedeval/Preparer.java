@@ -15,18 +15,6 @@ public class Preparer {
 
 	/**
 	 * Static convenience method. Identical to: <br/>
-	 * <code>new Preparer(template, arguments).preparedForEval();</code>
-	 * 
-	 * @param template the string to prepare by substituting question-marks with arguments
-	 * @param arguments any string arguments are escaped and quoted
-	 * @return the prepared string with all double-quotes and all backslashes escaped with backslashes
-	 */
-	public static String preparedForEval(final String template, final Object... arguments) {
-		return new Preparer(template, arguments).preparedForEval();
-	}
-
-	/**
-	 * Static convenience method. Identical to: <br/>
 	 * <code>new Preparer(true, template, arguments).prepared();</code>
 	 * 
 	 * @param template the string to prepare by substituting question-marks with arguments
@@ -74,13 +62,6 @@ public class Preparer {
 	 */
 	public String prepared() {
 		return prepared;
-	}
-
-	/**
-	 * @return the prepared string with all double-quotes and all backslashes escaped with backslashes
-	 */
-	public String preparedForEval() {
-		return Quoter.escaped(prepared);
 	}
 
 	@Override
