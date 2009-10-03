@@ -22,7 +22,7 @@ public class PreparerRhinoTest {
 	public static void setupAll() throws Exception {
 		ctx = ContextFactory.getGlobal().enterContext();
 		scope = ctx.initStandardObjects();
-		eval("function alert(s) { return s; }"); // mimic browser alert() function
+		eval("function id(s) { return s }");
 	}
 
 	@AfterClass
@@ -30,29 +30,33 @@ public class PreparerRhinoTest {
 		Context.exit();
 	}
 
-	// @Test
-	// public void should() throws Exception {
-	// final String script = Preparer.prepared("substring(?, ?)", "Orange", "ran");
-	// System.out.println(script);
-	// final Object result = eval(script);
-	// }
+	@Test
+	public void shouldFindStringInString() throws Exception {
+		final String script = Preparer.prepared("?.indexOf(?)", "Orange", "ran");
+		final Object result = eval(script);
+		assertEquals(1, result);
+	}
 
 	@Test
-	public void shouldShowAlertSimpleQuoted() throws Exception {
+	public void shouldReturnQuotedWithEscapedQuote() throws Exception {
+		final String message = Preparer.prepared("Hello ?!", "wo\"rld");
+		final String script = Preparer.prepared("id(?)", message);
+		final Object result = eval(script);
+		assertEquals("Hello \"wo\\\"rld\"!", result);
+	}
+
+	@Test
+	public void shouldReturnSimpleQuoted() throws Exception {
 		final String message = Preparer.prepared("Hello ?!", "stranger");
-		// System.out.println(message);
-		final String script = Preparer.prepared("alert(?)", message);
-		// System.out.println(script);
+		final String script = Preparer.prepared("id(?)", message);
 		final Object result = eval(script);
 		assertEquals("Hello \"stranger\"!", result);
 	}
 
 	@Test
-	public void shouldShowAlertUnquoted() throws Exception {
-		final String script = Preparer.prepared("alert(?)", "Hello world");
-		// System.out.println(script);
+	public void shouldReturnUnquoted() throws Exception {
+		final String script = Preparer.prepared("id(?)", "Hello world");
 		final Object result = eval(script);
-		// System.out.println(result);
 		assertEquals("Hello world", result);
 	}
 }
