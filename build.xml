@@ -7,6 +7,7 @@
 	<property name="junit.output.dir" value="junit"/>
 	<property name="lib.dir" value="lib"/>
 	<property name="bin.dir" value="bin"/>
+	<property name="dist.dir" value="dist"/>
 
 	<!-- TODO: point to your own JUnit4 installation -->
 	<property name="ECLIPSE_HOME" value="../../Applications/eclipse"/>
@@ -25,10 +26,12 @@
 
   <target name="clean" description="Clean output directory">
     <delete dir="${bin.dir}"/>
+    <delete dir="${dist.dir}"/>
   </target>
 
 	<target name="init">
 		<mkdir dir="${bin.dir}"/>
+    <mkdir dir="${dist.dir}"/>
 		<copy includeemptydirs="false" todir="${bin.dir}">
 			<fileset dir="src">
 				<exclude name="**/*.launch"/>
@@ -49,7 +52,14 @@
 		</copy>
 	</target>
 
-	<target name="build" depends="compile" />
+	<target name="build" depends="compile" description="Build distribution">
+		<delete file="${dist.dir}/preparedeval.jar"/>
+		<jar destfile="${dist.dir}/preparedeval.jar">
+			<fileset dir="${bin.dir}">
+        <exclude name="**/*Test.class"/>
+			</fileset>
+		</jar>
+	</target>
 
 	<target name="compile" depends="init">
 		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.dir}" source="${compile.version.source}" target="${compile.version.target}">
@@ -66,8 +76,7 @@
 		</javac>
 	</target>
 
-	<target name="tests" depends="unit-tests, integration-tests" description="Run tests">
-  </target>
+	<target name="tests" depends="unit-tests, integration-tests" description="Run tests"/>
 
 	<target name="integration-tests" depends="build" description="Run integration tests">
 		<mkdir dir="${junit.output.dir}"/>
