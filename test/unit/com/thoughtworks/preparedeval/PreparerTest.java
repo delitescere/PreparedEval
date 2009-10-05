@@ -6,6 +6,12 @@ import org.junit.Test;
 
 public class PreparerTest {
 	@Test
+	public void shouldPreserveTokenWhenNullArg() throws Exception {
+		final String template = "Hello ?";
+		assertEquals("Hello ?", new Preparer(template, (Object) null).prepared());
+	}
+
+	@Test
 	public void shouldRemoveTokenWhenEmptyArgs() throws Exception {
 		final String template = "Hello ";
 		assertEquals(template, new Preparer(template, new Object[] {}).prepared());
@@ -18,14 +24,8 @@ public class PreparerTest {
 	}
 
 	@Test
-	public void shouldRemoveTokenWhenNullArg() throws Exception {
-		final String template = "Hello ?";
-		assertEquals("Hello ", new Preparer(template, (Object) null).prepared());
-	}
-
-	@Test
-	public void shouldReplaceFirstTokenWithIntegerAndRemoveSecondTokenWithNullArg() throws Exception {
-		final String expected = "1 ";
+	public void shouldReplaceFirstTokenWithIntegerAndPreserveSecondTokenWithNullArg() throws Exception {
+		final String expected = "1 ?";
 		final String template = "? ?";
 		assertEquals(expected, new Preparer(template, 1, null).prepared());
 	}
@@ -105,8 +105,8 @@ public class PreparerTest {
 	}
 
 	@Test
-	public void shouldUnescapeEscapedTokenAndRemoveNoArgToken() throws Exception {
-		final String expected = "Hello ?";
+	public void shouldUnescapeEscapedTokenAndPreserveNoArgToken() throws Exception {
+		final String expected = "Hello ??";
 		final String template = "Hello \\??";
 		assertEquals(expected, new Preparer(template).prepared());
 	}
@@ -116,6 +116,13 @@ public class PreparerTest {
 		final String expected = "Hello ? \"stranger\"!";
 		final String template = "Hello \\? ?!";
 		assertEquals(expected, new Preparer(template, "stranger").prepared());
+	}
+
+	@Test
+	public void shouldUsePreparerArgLikeString() throws Exception {
+		final Preparer prepared1 = new Preparer("Hello ?\\?", "world");
+		final Preparer prepared2 = new Preparer("id(?)", prepared1);
+		assertEquals("id(\"Hello \\\"world\\\"?\")", prepared2.prepared());
 	}
 
 	@Test

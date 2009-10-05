@@ -31,6 +31,17 @@ public class PreparerRhinoTest {
 	}
 
 	@Test
+	public void shouldAliensArrive() throws Exception {
+		final String template = "Greetings ?, we are from planet Qu\"otoid\\Backslash. Have you heard of it\\? Take us to your ?.";
+		final String greeting = prepared(template, "earthlings", "leader");
+		final String script = prepared("id(?)", greeting);
+		final String expected = "Greetings \"earthlings\", we are from planet Qu\"otoid\\Backslash. Have you heard of it? Take us to your \"leader\".";
+		final Object result = eval(script);
+		// System.out.println(result); // uncomment to see the resultant JavaScript output
+		assertEquals(expected, result);
+	}
+
+	@Test
 	public void shouldFindStringInString() throws Exception {
 		final String script = prepared("?.indexOf(?)", "Orange", "ran");
 		final Object result = eval(script);

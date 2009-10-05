@@ -27,10 +27,10 @@ public class Preparer {
 
 	private final String prepared;
 
-	private boolean unquotedStrings = false;
+	private boolean usesUnquotedStrings = false;
 
-	public Preparer(final boolean unquotedStrings, final String template, final Object... arguments) {
-		this.unquotedStrings = unquotedStrings;
+	public Preparer(final boolean usesUnquotedStrings, final String template, final Object... arguments) {
+		this.usesUnquotedStrings = usesUnquotedStrings;
 		prepared = prepare(template, arguments);
 	}
 
@@ -46,16 +46,16 @@ public class Preparer {
 			if (arg == null) continue;
 
 			String replace;
-			if (arg instanceof String) {
-				if (!unquotedStrings) replace = Quoter.quoted((String) arg); // only surround strings with double-quotes
-				else replace = Quoter.escaped((String) arg);
+			if (arg instanceof String || arg instanceof Preparer) {
+				if (!usesUnquotedStrings) replace = Quoter.quoted(arg.toString()); // only surround strings with double-quotes
+				else replace = Quoter.escaped(arg.toString());
 				replace = Quoter.escaped(replace); // escape again because replaceFirst (below) is useless with backslashes
 			} else replace = arg.toString();
 
 			result = result.replaceFirst("(?<!\\\\)\\?", replace); // replace ? but not \?
 		}
 
-		result = result.replaceAll("(?<!\\\\)\\?", ""); // replace any remaining ? with nothing
+		// result = result.replaceAll("(?<!\\\\)\\?", ""); // replace any remaining ? with nothing
 
 		result = result.replace("\\?", "?"); // replace escaped ? with ?
 
