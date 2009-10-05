@@ -54,6 +54,11 @@ public class Preparer {
 
 			result = result.replaceFirst("(?<!\\\\)\\?", replace); // replace ? but not \?
 		}
+
+		result = result.replaceAll("(?<!\\\\)\\?", ""); // replace any remaining ? with nothing
+
+		result = result.replace("\\?", "?"); // replace escaped ? with ?
+
 		return result;
 	}
 
