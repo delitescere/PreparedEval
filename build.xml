@@ -52,7 +52,7 @@
 		</copy>
 	</target>
 
-	<target name="build" depends="compile" description="Build distribution">
+	<target name="build" depends="tests" description="Build distribution">
 		<delete file="${dist.dir}/preparedeval.jar"/>
 		<jar destfile="${dist.dir}/preparedeval.jar">
 			<fileset dir="${bin.dir}">
@@ -78,7 +78,7 @@
 
 	<target name="tests" depends="unit-tests, integration-tests" description="Run tests"/>
 
-	<target name="integration-tests" depends="build" description="Run integration tests">
+	<target name="integration-tests" depends="compile" description="Run integration tests">
 		<mkdir dir="${junit.output.dir}"/>
 		<junit fork="yes" printsummary="withOutAndErr">
 			<formatter type="xml"/>
@@ -90,7 +90,7 @@
 		</junit>
 	</target>
 
-	<target name="unit-tests" depends="build" description="Run unit tests">
+	<target name="unit-tests" depends="compile" description="Run unit tests">
 		<mkdir dir="${junit.output.dir}" />
 		<junit fork="yes" printsummary="withOutAndErr">
 			<formatter type="xml"/>
