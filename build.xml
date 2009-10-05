@@ -76,7 +76,9 @@
 		</javac>
 	</target>
 
-	<target name="tests" depends="unit-tests, integration-tests" description="Run tests"/>
+	<target name="tests" depends="unit-tests, integration-tests" description="Run tests">
+		<antcall target="junitreport"/>
+	</target>
 
 	<target name="integration-tests" depends="compile" description="Run integration tests">
 		<mkdir dir="${junit.output.dir}"/>
